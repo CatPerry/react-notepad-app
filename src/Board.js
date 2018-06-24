@@ -19,9 +19,32 @@ class Board extends Component {
       ]
     }
     //we have to always bind this
+    this.add = this.add.bind(this)
     this.eachNote = this.eachNote.bind(this)
     this.update = this.update.bind(this)
+    this.remove = this.remove.bind(this)
+    this.nextId = this.nextId.bind(this)
   }
+//new I'll create ability to add notes 
+add(text) {
+  this.setState(prevState => ({
+    notes: [
+      //use the ES6 spread operator to take all of the note that are in State and push them into a new array then we'll append another note. 
+      ...prevState.notes, 
+      {
+        id: this.nextId(), 
+        note: text
+      }
+    ]
+  }));
+}
+
+//this function autogenerates an ID for us
+nextId() {
+  this.uniqueId = this.uniqueId || 0
+  return this.uniqueId++
+}
+
 //I want to be able to update the note. The state of the note is being held in the Board component. But eahc itme I update it I want to send the new note text from its child, the note component. So we'll use this new method called update.
 //And we'll get the next text from the note by adding an onChange state to each of the notes. 
   update(newText, i) {
@@ -30,8 +53,17 @@ class Board extends Component {
     this.setState(prevState => ({
       notes: prevState.notes.map(
         //this checks: if we're not updating the note, return it as is; otherwise return new object and pass in keys for note, and overwrite text for note key 
-        note => (note.id != i ? note : {...note, note: newText})
+        note => (note.id !== i ? note : {...note, note: newText})
       )
+    }))
+  }
+
+  remove(id) {
+    console.log('removing item at', id)
+    //use a callback to pass in the prevState 
+    this.setState(prevState => ({
+      //.filter resets the state of note and will return an array that will remove the item hwere this is true, where we're removing by that ID. 
+      notes: prevState.notes.filter(note => note.id !== id)
     }))
   }
   //EACH TIME WE UPDATE SEND THE NEW NOTE component to 
@@ -40,7 +72,8 @@ class Board extends Component {
     return (
       <Note key={i}
         index={i}
-        onChange={this.update}>
+        onChange={this.update}
+        onRemove={this.remove}>
         {/* this is what's displayed: the value of note above in the key /value pairs under notes */}
         {note.note}
         {/* this ust close not component */}
