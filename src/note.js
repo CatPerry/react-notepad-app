@@ -22,36 +22,51 @@ class Note extends Component {
       this.randomBetween = this.randomBetween.bind(this)
     }
 
-  componentWillMount() {
-    this.style = {
-      right: this.randomBetween(0, document.innerWidth - 150, 'px'),
-      top: this.randomBetween(0, document.innerHeight - 150, 'px'),
-      transform: `rotate(${this.randomBetween(-25, 25, 'deg')})`
-    }
+componentWillMount() {
+  this.style = {
+    right: this.randomBetween(0, document.innerWidth - 150, 'px'),
+    top: this.randomBetween(0, document.innerHeight - 150, 'px'),
+    transform: `rotate(${this.randomBetween(-25, 25, 'deg')})`
   }
-  
-  randomBetween(x, y, s) {
-    return x + Math.ceil(Math.random() * (y-x)) + s
-  }
+}
 
-  //let' viewers know they are editing/removing the text
-  edit() {
-    this.setState({
-      editing: true
-    })
+randomBetween(x, y, s) {
+  return x + Math.ceil(Math.random() * (y-x)) + s
+}
+
+componentDidUpdate() {
+  var textArea
+  if (this.state.editing) {
+    textArea = this._newText
+    textArea.focus()
+    textArea.select()
   }
-  remove() {
-    this.props.onRemove(this.props.index)
-  }
+}
+
+shouldComponentUpdate(nextProps, nextState) {
+  return (
+    this.props.children !== nextProps.children || this.state !== nextState
+  )
+}
+
+//let' viewers know they are editing/removing the text
+edit() {
+  this.setState({
+    editing: true
+  })
+}
+remove() {
+  this.props.onRemove(this.props.index)
+}
 //handle the Save State
-  save(e) {
-    e.preventDefault();
-    //this refers to update in the the board.js file
-    //and we'll pass the in the ref form renderForm below: this._newText.value
-    this.props.onChange(this._newText.value, this.props.index);
-    //then set state back to false
-    this.setState({ editing: false });
-          }
+save(e) {
+  e.preventDefault();
+  //this refers to update in the the board.js file
+  //and we'll pass the in the ref form renderForm below: this._newText.value
+  this.props.onChange(this._newText.value, this.props.index);
+  //then set state back to false
+  this.setState({ editing: false });
+        }
 
 //Now we need a few functions that handle creating a form
 renderForm() {
@@ -59,7 +74,8 @@ renderForm() {
     <div className="note" style={this.style}>
       <form onSubmit={this.save}>
         {/* added a REF below to to capture the input into the text area. We are using a CALLBACK function for it. Then we, the the save method above use this.new_text.value to capture the value*/}
-        <textarea ref={input => this._newText = input}/>
+        <textarea ref={input => this._newText = input}
+          defaultValue={this.props.children}/>
         <button id="save"><FaFloppyO/></button>
       </form>
     </div>

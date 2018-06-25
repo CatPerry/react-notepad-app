@@ -7,17 +7,17 @@ div#react-container {
     height: 100%;
     overflow: hidden;
 }
-
 body {
     margin: 0;
     padding: 0;
 }
-
 div.board {
     background-color: brown;
     width: 100%;
     height: 1000px;
     background: #eab92d;
+		overflow: auto;
+		padding: 30px;
     background: -moz-radial-gradient(center, ellipse cover, #eab92d 57%, #c79810 99%);
     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(57%, #eab92d), color-stop(99%, #c79810));
     background: -webkit-radial-gradient(center, ellipse cover, #eab92d 57%, #c79810 99%);
@@ -25,9 +25,7 @@ div.board {
     background: -ms-radial-gradient(center, ellipse cover, #eab92d 57%, #c79810 99%);
     background: radial-gradient(ellipse at center, #eab92d 57%, #c79810 99%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eab92d', endColorstr='#c79810', GradientType=1);
-
 }
-
 div.note {
     /* height: 150px; */
     width: 150px;
@@ -37,15 +35,14 @@ div.note {
     display: inline-flex;
     margin: 20px;
     position: relative;
+    overflow: scroll;
     cursor: -webkit-grab;
     -webkit-box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
     box-shadow: 5px 5px 15px 0 rgba(0, 0, 0, .2);
 }
-
 div.note:active {
     cursor: -webkit-grabbing;
 }
-
 div.note p {
     font-size: 22px;
     padding: 5px;
@@ -55,7 +52,6 @@ div.note p {
 div.note:hover > span {
     opacity: 1;
 }
-
 div.note > span {
     position: absolute;
     bottom: 2px;
@@ -63,35 +59,31 @@ div.note > span {
     opacity: 0;
     transition: opacity .25s linear;
 }
-
 div.note button {
     margin: 2px;
 }
-
 div.note > textarea {
     height: 75%;
     background: rgba(255, 255, 255, .5);
 }
-
 div.board button {
   color: #fff;
   font-size: 14px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.55);
 }
-
 #add {
   background-color: #5cb85c;
   height: 3em;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
-
 #edit {
   background-color: #337ab7;
 }
-
 #save {
   background-color: #5cb85c;
 }
-
 #remove {
   background-color: #d9534f;
 }
