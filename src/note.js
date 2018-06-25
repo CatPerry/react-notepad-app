@@ -19,7 +19,21 @@ class Note extends Component {
       this.save = this.save.bind(this)
       this.renderForm = this.renderForm.bind(this)
       this.renderDisplay = this.renderDisplay.bind(this)
+      this.randomBetween = this.randomBetween.bind(this)
     }
+
+  componentWillMount() {
+    this.style = {
+      right: this.randomBetween(0, document.innerWidth - 150, 'px'),
+      top: this.randomBetween(0, document.innerHeight - 150, 'px'),
+      transform: `rotate(${this.randomBetween(-25, 25, 'deg')})`
+    }
+  }
+  
+  randomBetween(x, y, s) {
+    return x + Math.ceil(Math.random() * (y-x)) + s
+  }
+
   //let' viewers know they are editing/removing the text
   edit() {
     this.setState({
@@ -42,7 +56,7 @@ class Note extends Component {
 //Now we need a few functions that handle creating a form
 renderForm() {
   return (
-    <div className="note">
+    <div className="note" style={this.style}>
       <form onSubmit={this.save}>
         {/* added a REF below to to capture the input into the text area. We are using a CALLBACK function for it. Then we, the the save method above use this.new_text.value to capture the value*/}
         <textarea ref={input => this._newText = input}/>
@@ -53,16 +67,18 @@ renderForm() {
 }
   //changed this to renderDisplay funciton since it's rendering display
   renderDisplay() {
-    return (
-      <div className="note">
-      {/* this will display any child elements of it (i.e., whatever the value of Note/each Note is on the board.js file) */}
+    return <div className="note" style={this.style}>
+        {/* this will display any child elements of it (i.e., whatever the value of Note/each Note is on the board.js file) */}
         <p>{this.props.children}</p>
         <span>
-          <button onClick={this.edit} id="edit"><FaPencil /></button>
-          <button onClick={this.remove} id="remove"><FaTrash /></button>
+          <button onClick={this.edit} id="edit">
+            <FaPencil />
+          </button>
+          <button onClick={this.remove} id="remove">
+            <FaTrash />
+          </button>
         </span>
-      </div>
-    )
+      </div>;
   }
   //always need a final render method that will append items to the DOM given their state. and let's use th ternary syntax to check all states at once.
   render() {

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Note from './note'
+import FaPlus from 'react-icons/lib/fa/plus'
 
 class Board extends Component {
   //modify the board to ADD STATE. and instead of rendering ONE of the notes we'll render the notes based on some State data. We'll use the constructor method and call super to do this.
@@ -7,16 +8,8 @@ class Board extends Component {
     super(props)
     this.state = {
       //this will render an array of dynamic data the will list the number of notes in our app
-      notes: [
-        {id: 0,
-        note: "Walk outside"},
-        {id: 1,
-          note: "MERN app"}, 
-        {id: 2,
-          note: "React app"},
-        {id: 3,
-          note: "Vacuum"}
-      ]
+      //let's set the notes as an empty array to make it dynamic
+      notes: []
     }
     //we have to always bind this
     this.add = this.add.bind(this)
@@ -25,6 +18,18 @@ class Board extends Component {
     this.remove = this.remove.bind(this)
     this.nextId = this.nextId.bind(this)
   }
+
+  componentWillMount() {
+    let self = this
+    if (this.props.count){
+      fetch(`https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}`)
+      .then(response => response.json())
+      .then(json => json[0]
+        .split('. ')
+        .forEach(sentence => self.add(sentence.substring(0, 25))))
+    } 
+  }
+
 //new I'll create ability to add notes 
 add(text) {
   this.setState(prevState => ({
@@ -86,6 +91,10 @@ nextId() {
       <div className="board">
       {/* this will map over all the notes int eh array that are in STATE and print them to the screen. It does so by calling the eachNote function for every instance of a note*/}
         {this.state.notes.map(this.eachNote)}
+        {/* we'll add a button to createa new note and have default text added to it  */}
+        <button onClick={this.add.bind(null, "New Note ")}           id="add">
+          <FaPlus/>
+        </button>
       </div>
     )
   }
