@@ -82,7 +82,7 @@ eachNote(note, i) {
       onRemove={this.remove}>
       {/* this is what's displayed: the value of note above in the key /value pairs under notes */}
       {note.note}
-      {/* this ust close not component */}
+      {/* this ust close out component */}
     </Note>
   )
 }
@@ -91,9 +91,10 @@ render() {
   return (
     <div className="board">
     {/* this will map over all the notes int eh array that are in STATE and print them to the screen. It does so by calling the eachNote function for every instance of a note*/}
-      {this.state.notes.reverse().map(this.eachNote)}
+      {this.state.notes.map(this.eachNote)}
       {/* we'll add a button to createa new note and have default text added to it  */}
-      <button onClick={this.add.bind(null, "New Note")}           id="add">
+      <button onClick={this.add.bind(null, "New Note")}           
+          id="add">
         <FaPlus/>
       </button>
     </div>
